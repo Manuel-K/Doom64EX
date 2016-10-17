@@ -106,10 +106,7 @@ CVAR(am_overlay, 0);
 CVAR_EXTERNAL(v_msensitivityx);
 CVAR_EXTERNAL(v_msensitivityy);
 
-#ifdef _USE_XINPUT  // XINPUT
 CVAR_EXTERNAL(i_rsticksensitivity);
-CVAR_EXTERNAL(i_xinputscheme);
-#endif
 
 //
 // CMD_Automap
@@ -344,7 +341,6 @@ dboolean AM_Responder(event_t* ev) {
             }
         }
     }
-#ifdef _USE_XINPUT  // XINPUT
 
     else if(ev->type == ev_gamepad) {
         //
@@ -352,7 +348,7 @@ dboolean AM_Responder(event_t* ev) {
         // moving around with the stick
         //
         if(am_flags & AF_PANGAMEPAD) {
-            if(ev->data3 == XINPUT_GAMEPAD_LEFT_STICK) {
+            if(ev->data3 == AXIS_LSTICK) {
                 float x;
                 float y;
 
@@ -376,14 +372,14 @@ dboolean AM_Responder(event_t* ev) {
                 CMD_AutomapSetFlag(AF_PANGAMEPAD, NULL);
                 break;
 
-            case BUTTON_LEFT_SHOULDER:
+            case BUTTON_LSHOULDER:
                 if(am_flags & AF_PANGAMEPAD) {
                     CMD_AutomapSetFlag(AF_ZOOMIN, NULL);
                     rc = true;
                 }
                 break;
 
-            case BUTTON_RIGHT_SHOULDER:
+            case BUTTON_RSHOULDER:
                 if(am_flags & AF_PANGAMEPAD) {
                     CMD_AutomapSetFlag(AF_ZOOMOUT, NULL);
                     rc = true;
@@ -425,11 +421,11 @@ dboolean AM_Responder(event_t* ev) {
                 CMD_AutomapSetFlag(AF_PANGAMEPAD|PCKF_UP, NULL);
                 break;
 
-            case BUTTON_LEFT_SHOULDER:
+            case BUTTON_LSHOULDER:
                 CMD_AutomapSetFlag(AF_ZOOMIN|PCKF_UP, NULL);
                 break;
 
-            case BUTTON_RIGHT_SHOULDER:
+            case BUTTON_RSHOULDER:
                 CMD_AutomapSetFlag(AF_ZOOMOUT|PCKF_UP, NULL);
                 break;
 
@@ -451,7 +447,6 @@ dboolean AM_Responder(event_t* ev) {
             }
         }
     }
-#endif
 
     return rc;
 
@@ -506,8 +501,6 @@ void AM_Ticker(void) {
         }
     }
 
-#ifdef _USE_XINPUT  // XINPUT
-
     if(am_flags & AF_PANGAMEPAD) {
         automappanx += mpanx;
         automappany += mpany;
@@ -518,8 +511,6 @@ void AM_Ticker(void) {
         automapy = plr->mo->y;
         automapangle = plr->mo->angle;
     }
-
-#endif
 
     if((!followplayer || (am_flags & AF_PANGAMEPAD)) &&
             am_flags & (AF_PANLEFT|AF_PANRIGHT|AF_PANTOP|AF_PANBOTTOM)) {

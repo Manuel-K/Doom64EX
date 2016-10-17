@@ -29,6 +29,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <d_event.h>
 
 #include "SDL.h"
 #include "SDL_opengl.h"
@@ -41,8 +42,15 @@
 #include "d_main.h"
 #include "gl_main.h"
 
+#define MAX_CONTROLLERS 16
+
 SDL_Window      *window;
 SDL_GLContext   glContext;
+struct Controller {
+    int index;
+    SDL_GameController *handle;
+} controllers[MAX_CONTROLLERS];
+int numControllers = 0;
 
 CVAR(v_msensitivityx, 5);
 CVAR(v_msensitivityy, 5);
@@ -56,6 +64,8 @@ CVAR(v_windowed, 1);
 CVAR(v_vsync, 1);
 CVAR(v_depthsize, 24);
 CVAR(v_buffersize, 32);
+CVAR(i_rsticksensitivity, 5);
+CVAR(i_rstickthreshold, 5);
 
 CVAR_EXTERNAL(m_menumouse);
 
@@ -238,7 +248,7 @@ void I_ShutdownVideo(void) {
 //
 
 void I_InitVideo(void) {
-    uint32 f = SDL_INIT_VIDEO;
+    uint32 f = SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER;
 
 #ifdef _DEBUG
     f |= SDL_INIT_NOPARACHUTE;
@@ -264,10 +274,6 @@ void I_StartTic(void) {
     while(SDL_PollEvent(&Event)) {
         I_GetEvent(&Event);
     }
-
-#ifdef _USE_XINPUT
-    I_XInputPollEvent();
-#endif
 
     I_ReadMouse();
 }
@@ -461,7 +467,67 @@ static int I_TranslateKey(const int key) {
     }
 
     return rc;
+}
 
+//
+// I_TranslateButton
+//
+
+static int I_TranslateButton(const int key) {
+    int rc;
+
+    switch (key) {
+    case SDL_CONTROLLER_BUTTON_A:
+        rc = BUTTON_A;
+        break;
+    case SDL_CONTROLLER_BUTTON_B:
+        rc = BUTTON_B;
+        break;
+    case SDL_CONTROLLER_BUTTON_X:
+        rc = BUTTON_X;
+        break;
+    case SDL_CONTROLLER_BUTTON_Y:
+        rc = BUTTON_Y;
+        break;
+    case SDL_CONTROLLER_BUTTON_BACK:
+        rc = BUTTON_BACK;
+        break;
+    case SDL_CONTROLLER_BUTTON_GUIDE:
+        rc = BUTTON_GUIDE;
+        break;
+    case SDL_CONTROLLER_BUTTON_START:
+        rc = BUTTON_START;
+        break;
+    case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+        rc = BUTTON_DPAD_LEFT;
+        break;
+    case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+        rc = BUTTON_DPAD_RIGHT;
+        break;
+    case SDL_CONTROLLER_BUTTON_DPAD_UP:
+        rc = BUTTON_DPAD_UP;
+        break;
+    case SDL_CONTROLLER_BUTTON_DPAD_DOWN:
+        rc = BUTTON_DPAD_DOWN;
+        break;
+    case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:
+        rc = BUTTON_LSHOULDER;
+        break;
+    case SDL_CONTROLLER_BUTTON_LEFTSTICK:
+        rc = BUTTON_LSTICK;
+        break;
+    case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER:
+        rc = BUTTON_RSHOULDER;
+        break;
+    case SDL_CONTROLLER_BUTTON_RIGHTSTICK:
+        rc = BUTTON_RSTICK;
+        break;
+    default:
+        rc = key;
+        break;
+    }
+
+    return rc;
 }
 
 //
@@ -574,6 +640,7 @@ void I_UpdateGrab(void) {
 //
 
 static void I_GetEvent(SDL_Event *Event) {
+    int i;
     event_t event;
     uint32 mwheeluptic = 0, mwheeldowntic = 0;
     uint32 tic = gametic;
@@ -591,6 +658,47 @@ static void I_GetEvent(SDL_Event *Event) {
         event.type = ev_keyup;
         event.data1 = I_TranslateKey(Event->key.keysym.sym);
         D_PostEvent(&event);
+        break;
+
+    case SDL_CONTROLLERBUTTONDOWN:
+        event.type = ev_keydown;
+        event.data1 = I_TranslateButton(Event->cbutton.button);
+        D_PostEvent(&event);
+        I_Printf("Pressed: %d\n", event.data1);
+        break;
+
+    case SDL_CONTROLLERBUTTONUP:
+        event.type = ev_keyup;
+        event.data1 = I_TranslateButton(Event->cbutton.button);
+        D_PostEvent(&event);
+        break;
+
+    case SDL_CONTROLLERAXISMOTION:
+        event.type = ev_gamepad;
+        break;
+
+    case SDL_CONTROLLERDEVICEADDED:
+        if (numControllers < MAX_CONTROLLERS) {
+            controllers[numControllers].handle = SDL_GameControllerOpen(Event->cdevice.which);
+            controllers[numControllers].index = Event->cdevice.which;
+            numControllers++;
+            I_Printf("Controller detected: %s\n",
+                     SDL_GameControllerNameForIndex(Event->cdevice.which));
+        } else {
+            I_Printf("Too many controllers connected. Ignoring: %s\n",
+                     SDL_GameControllerNameForIndex(Event->cdevice.which));
+        }
+        break;
+
+    case SDL_CONTROLLERDEVICEREMOVED:
+        for (i = 0; i < numControllers; i++) {
+            if (Event->cdevice.which == controllers[i].index) {
+                SDL_GameControllerClose(controllers[i].handle);
+                I_Printf("Controller removed: %s\n", SDL_GameControllerName(controllers[i].handle));
+                controllers[i] = controllers[--numControllers];
+                break;
+            }
+        }
         break;
 
 	case SDL_MOUSEBUTTONDOWN:
@@ -678,12 +786,7 @@ static void I_InitInputs(void) {
     SDL_ShowCursor(m_menumouse.value < 1);
 
     I_MouseAccelChange();
-
-#ifdef _USE_XINPUT
-    I_XInputInit();
-#endif
 }
-
 
 //
 // V_RegisterCvars

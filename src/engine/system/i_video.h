@@ -29,8 +29,6 @@
 #include "SDL.h"
 #include "d_event.h"
 
-#define SDL_BPP        32
-
 ////////////Video///////////////
 
 extern SDL_Surface *screen;
@@ -46,12 +44,9 @@ void I_ShutdownVideo(void);
 void I_StartTic(void);
 void I_FinishUpdate(void);
 int I_ShutdownWait(void);
-void I_CenterMouse(void);
 
 ////////////Input//////////////
 
-extern int UseMouse[2];
-extern int UseJoystick;
 extern int mouse_x;
 extern int mouse_y;
 

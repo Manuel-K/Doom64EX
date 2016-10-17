@@ -901,7 +901,7 @@ void ST_Drawer(void) {
             char contextstring[32];
             float x;
 
-#ifdef _USE_XINPUT  // XINPUT
+#if 0 // TODO: Detect if a controller is connected
             if(xgamepad.connected) {
                 M_DrawXInputButton(140, 156, XINPUT_GAMEPAD_A);
                 Draw_Text(213, 214, WHITEALPHA(0xA0), 0.75, false, "Use");

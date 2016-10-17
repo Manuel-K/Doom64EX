@@ -356,6 +356,44 @@ extern dboolean windowpause;
 #define KEY_MWHEELUP            (0x80 + 0x6b)
 #define KEY_MWHEELDOWN          (0x80 + 0x6c)
 
+//
+// Mappings for SDL_GameController
+//
+
+// Digital buttons
+#define BUTTON_A             400
+#define BUTTON_B             401
+#define BUTTON_X             402
+#define BUTTON_Y             403
+#define BUTTON_BACK          404
+#define BUTTON_GUIDE         405
+#define BUTTON_START         406
+#define BUTTON_DPAD_LEFT     407
+#define BUTTON_DPAD_RIGHT    408
+#define BUTTON_DPAD_UP       409
+#define BUTTON_DPAD_DOWN     410
+#define BUTTON_LSHOULDER     411
+#define BUTTON_RSHOULDER     412
+#define BUTTON_LSTICK        413
+#define BUTTON_RSTICK        414
+
+// SDL_GameController Pseudo-buttons (Analog)
+#define PBUTTON_LSTICK_LEFT  415
+#define PBUTTON_LSTICK_RIGHT 416
+#define PBUTTON_LSTICK_UP    417
+#define PBUTTON_LSTICK_DOWN  418
+#define PBUTTON_RSTICK_LEFT  415
+#define PBUTTON_RSTICK_RIGHT 416
+#define PBUTTON_RSTICK_UP    417
+#define PBUTTON_RSTICK_DOWN  418
+#define PBUTTON_LTRIGGER     419
+#define PBUTTON_RTRIGGER     420
+
+#define AXIS_LSTICK          421
+#define AXIS_RSTICK          422
+#define AXIS_LTRIGGER        423
+#define AXIS_RTRIGGER        424
+
 // DOOM basic types (dboolean),
 //  and max/min values.
 #include "doomtype.h"
