@@ -23,6 +23,7 @@
 #ifndef __GL_DRAW_H__
 #define __GL_DRAW_H__
 
+#include <string>
 #include "gl_main.h"
 
 void Draw_GfxImage(int x, int y, const char* name,
@@ -55,8 +56,8 @@ extern const symboldata_t symboldata[];
 
 int Draw_Text(int x, int y, rcolor color, float scale,
               dboolean wrap, const char* string, ...);
-int Center_Text(const char* string);
-int Draw_BigText(int x, int y, rcolor color, const char* string);
+int Center_Text(const std::string &string);
+int Draw_BigText(int x, int y, rcolor color, const std::string &string);
 void Draw_Number(int x, int y, int num, int type, rcolor c);
 float Draw_ConsoleText(float x, float y, rcolor color,
                        float scale, const char* string, ...);

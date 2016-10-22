@@ -62,8 +62,8 @@ void*           W_GetMapLump(int lump);
 void            W_CacheMapLump(int map);
 void            W_FreeMapLump(void);
 int             W_MapLumpLength(int lump);
-void*           W_CacheLumpNum(int lump, int tag);
-void*           W_CacheLumpName(const char* name, int tag);
+byte*           W_CacheLumpNum(int lump, int tag);
+byte*           W_CacheLumpName(const char* name, int tag);
 
 
 

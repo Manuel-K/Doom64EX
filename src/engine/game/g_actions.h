@@ -24,6 +24,8 @@
 #ifndef G_ACTIONS_H
 #define G_ACTIONS_H
 
+#include <string>
+
 #define MAX_ACTIONPARAM        2
 
 typedef void (*actionproc_t)(int64 data, char **param);
@@ -32,14 +34,14 @@ typedef void (*actionproc_t)(int64 data, char **param);
 
 void        G_InitActions(void);
 dboolean    G_ActionResponder(event_t *ev);
-void        G_AddCommand(char *name, actionproc_t proc, int64 data);
+void        G_AddCommand(const std::string &name, actionproc_t proc, int64 data);
 void        G_ActionTicker(void);
-void        G_ExecuteCommand(char *action);
-void        G_BindActionByName(char *key, char *action);
-dboolean    G_BindActionByEvent(event_t *ev, char *action);
-void        G_ShowBinding(char *key);
-void        G_GetActionBindings(char *buff, char *action);
-void        G_UnbindAction(char *action);
+void        G_ExecuteCommand(const std::string &action);
+void        G_BindActionByName(const std::string &key, const std::string &action);
+dboolean    G_BindActionByEvent(event_t *ev, const std::string &action);
+void        G_ShowBinding(const std::string &key);
+void        G_GetActionBindings(const std::string &buff, const std::string &action);
+void        G_UnbindAction(const std::string &action);
 int         G_ListCommands(void);
 void        G_OutputBindings(FILE *fh);
 void        G_DoCmdMouseMove(int x, int y);

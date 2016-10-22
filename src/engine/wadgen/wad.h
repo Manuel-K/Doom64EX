@@ -8,31 +8,27 @@
 
 #define MAX_LUMPS	4096
 
-#ifdef _MSC_VER
 #pragma pack(push, 1)
-#endif
 
 typedef struct {
-	char id[4];
-	int lmpcount;
-	int lmpdirpos;
+    char id[4];
+    int lmpcount;
+    int lmpdirpos;
 } wadheader_t;
 
 typedef struct {
-	int filepos;
-	int size;
-	char name[8];
+    int filepos;
+    int size;
+    char name[8];
 } lump_t;
 
-#ifdef _MSC_VER
 #pragma pack(pop)
-#endif
 
 typedef struct {
-	wadheader_t header;
-	lump_t lump[MAX_LUMPS];
-	cache lumpcache[MAX_LUMPS];
-	uint size;
+    wadheader_t header;
+    lump_t lump[MAX_LUMPS];
+    cache lumpcache[MAX_LUMPS];
+    uint size;
 } wadFile_t;
 
 extern wadFile_t romWadFile;
@@ -40,7 +36,7 @@ extern wadFile_t outWadFile;
 
 void Wad_GetIwad(void);
 int Wad_GetLumpNum(const char *name);
-void *Wad_GetLump(char *name, bool dcmpType);
+unsigned char *Wad_GetLump(const char *name, bool dcmpType);
 void Wad_CreateOutput(void);
 void Wad_WriteOutput(path outFile);
 void Wad_AddOutputSprite(d64ExSpriteLump_t * sprite);

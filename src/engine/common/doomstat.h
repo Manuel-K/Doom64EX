@@ -62,7 +62,7 @@ extern  int         startmap;
 extern  dboolean    autostart;
 
 // Selected by user.
-extern  skill_t     gameskill;
+extern  int         gameskill;
 extern  int         gamemap;
 extern  int         nextmap;
 

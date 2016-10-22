@@ -24,11 +24,6 @@
 #ifndef __D_THINK__
 #define __D_THINK__
 
-
-#ifdef __GNUG__
-#pragma interface
-#endif
-
 //
 // Experimental stuff.
 // To compile this as "ANSI C with classes"
@@ -39,12 +34,65 @@ typedef void(*actionf_v)(void);
 typedef void(*actionf_p1)(void*);
 typedef void(*actionf_p2)(void*, void*);
 
-typedef union {
-    actionf_p1  acp1;
+union actionf_t {
     actionf_v   acv;
+    actionf_p1  acp1;
     actionf_p2  acp2;
 
-} actionf_t;
+    actionf_t():
+        acv(nullptr)
+    {
+    }
+
+    actionf_t(decltype(nullptr)):
+        acv(nullptr)
+    {
+    }
+
+    actionf_t(actionf_v p):
+        acv(p)
+    {
+    }
+
+    template <class T>
+    actionf_t(void (*p)(T)):
+        acp1(reinterpret_cast<actionf_p1>(p))
+    {
+    }
+
+    template <class T, class U>
+    actionf_t(void (*p)(T, U)):
+        acp2(reinterpret_cast<actionf_p2>(p))
+    {
+    }
+
+    operator bool() const
+    {
+        return acv == nullptr;
+    }
+
+    bool operator!() const
+    {
+        return acv == nullptr;
+    }
+
+    void operator()() const
+    {
+        acv();
+    }
+
+    template <class T>
+    void operator()(T a) const
+    {
+        acp1(reinterpret_cast<void *>(a));
+    }
+
+    template <class T, class U>
+    void operator()(T a, U b) const
+    {
+        acp2(reinterpret_cast<void *>(a), reinterpret_cast<void*>(b));
+    }
+};
 
 
 
@@ -57,11 +105,11 @@ typedef actionf_t  think_t;
 
 
 // Doubly linked list of actors.
-typedef struct thinker_s {
-    struct thinker_s*   prev;
-    struct thinker_s*   next;
-    think_t             function;
+struct thinker_t {
+    thinker_t*   prev;
+    thinker_t*   next;
+    think_t      function;
 
-} thinker_t;
+};
 
 #endif

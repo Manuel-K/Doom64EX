@@ -24,6 +24,7 @@
 #ifndef __G_GAME__
 #define __G_GAME__
 
+#include <string>
 #include "doomdef.h"
 #include "d_event.h"
 
@@ -41,7 +42,7 @@ void G_InitNew(skill_t skill, int map);
 void G_DeferedInitNew(skill_t skill, int map);
 void G_LoadGame(const char* name);
 void G_DoLoadGame(void);
-void G_SaveGame(int slot, const char* description);
+void G_SaveGame(int slot, const std::string &description);
 void G_DoSaveGame(void);
 void G_CompleteLevel(void);
 void G_ExitLevel(void);

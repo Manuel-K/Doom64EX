@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*- 
+// Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
 // Copyright(C) 2005 Simon Howard
@@ -27,9 +27,8 @@
 #include "net_defs.h"
 #include "net_packet.h"
 
-typedef enum 
-{
-    // sending syn packets, waiting for an ACK reply 
+enum net_connstate_t {
+    // sending syn packets, waiting for an ACK reply
     // (client side)
 
     NET_CONN_STATE_CONNECTING,
@@ -38,7 +37,7 @@ typedef enum
     // (server side)
 
     NET_CONN_STATE_WAITING_ACK,
-    
+
     // successfully connected
 
     NET_CONN_STATE_CONNECTED,
@@ -59,12 +58,11 @@ typedef enum
 
     NET_CONN_STATE_DISCONNECTED_SLEEP,
 
-} net_connstate_t;
+};
 
 // Reason a connection was terminated
 
-typedef enum
-{
+enum net_disconnect_reason_t {
     // As the result of a local disconnect request
 
     NET_DISCONNECT_LOCAL,
@@ -77,14 +75,13 @@ typedef enum
 
     NET_DISCONNECT_TIMEOUT,
 
-} net_disconnect_reason_t;
+};
 
 #define MAX_RETRIES 5
 
 typedef struct net_reliable_packet_s net_reliable_packet_t;
 
-typedef struct 
-{
+struct net_connection_t {
     net_connstate_t state;
     net_disconnect_reason_t disconnect_reason;
     net_addr_t *addr;
@@ -95,25 +92,24 @@ typedef struct
     net_reliable_packet_t *reliable_packets;
     int reliable_send_seq;
     int reliable_recv_seq;
-} net_connection_t;
+};
 
 
 void NET_Conn_SendPacket(net_connection_t *conn, net_packet_t *packet);
 void NET_Conn_InitClient(net_connection_t *conn, net_addr_t *addr);
 void NET_Conn_InitServer(net_connection_t *conn, net_addr_t *addr);
 dboolean NET_Conn_Packet(net_connection_t *conn, net_packet_t *packet,
-                        unsigned int *packet_type);
+                         unsigned int *packet_type);
 void NET_Conn_Disconnect(net_connection_t *conn);
 void NET_Conn_Run(net_connection_t *conn);
 net_packet_t *NET_Conn_NewReliable(net_connection_t *conn, int packet_type);
 
 // Other miscellaneous common functions
 
-void NET_SafePuts(char *msg);
+void NET_SafePuts(const char *msg);
 unsigned int NET_ExpandTicNum(unsigned int relative, unsigned int b);
 
 //dboolean NET_ValidGameMode(GameMode_t mode, GameMission_t mission);
 dboolean NET_ValidGameSettings(net_gamesettings_t *settings);
 
 #endif /* #ifndef NET_COMMON_H */
-

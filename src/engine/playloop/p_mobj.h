@@ -144,12 +144,13 @@ typedef enum {
 
 } mobjflag_t;
 
-typedef enum {
+using mobjblockflag_t = int;
+enum {
     BF_MOBJSTAND        = 1,    // Standing on top of thing?
     BF_MOBJPASS         = 2,    // Able to pass under thing?
     BF_MIDPOINTONLY     = 4     // Only check sector where mobj's midpoint is inside
 
-} mobjblockflag_t;
+};
 
 // Map Object definition
 

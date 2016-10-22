@@ -28,7 +28,8 @@
 // Needed for action function pointer handling.
 #include "d_think.h"
 
-typedef enum {
+using spritenum_t = int;
+enum {
     SPR_SPOT,
     SPR_PLAY,
     SPR_SARG,
@@ -158,9 +159,10 @@ typedef enum {
     SPR_GBLD,   // [kex] region-specific sprite
     NUMSPRITES
 
-} spritenum_t;
+};
 
-typedef enum {
+using statenum_t = int;
+enum {
     S_000,
     S_001,
     S_002,
@@ -959,17 +961,17 @@ typedef enum {
     S_795,
     S_796,
     NUMSTATES
-} statenum_t;
+};
 
 typedef struct {
     spritenum_t    sprite;
     long            frame;
     long            tics;
-    actionf_t        action;
+    actionf_t      action;
     statenum_t    nextstate;
 } state_t;
 
-typedef enum {
+enum mobjtype_t {
     MT_PLAYER,                // 0
     MT_PLAYERBOT1,            // 1
     MT_PLAYERBOT2,            // 2
@@ -1102,7 +1104,7 @@ typedef enum {
     MT_GIB_HANGHEAD,        // 129
     MT_GIB_HANGRIB,            // 130
     NUMMOBJTYPES
-} mobjtype_t;
+};
 
 typedef struct {
     int    doomednum;
@@ -1133,7 +1135,7 @@ typedef struct {
 
 
 extern state_t states[NUMSTATES];
-extern char *sprnames[NUMSPRITES+1];
+extern const char *sprnames[NUMSPRITES+1];
 
 
 

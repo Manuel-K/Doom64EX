@@ -31,6 +31,7 @@
 
 #endif // _WIN32
 
+#include <cmath>
 #include <stdio.h>
 
 #include "doomtype.h"
@@ -68,8 +69,14 @@ dboolean    dfcmp(float f1, float f2);
 int         dsprintf(char *buf, const char *format, ...);
 int         dsnprintf(char *src, size_t n, const char *str, ...);
 
-extern d_inline int D_abs(int x);
-extern d_inline float D_fabs(float x);
+inline int D_abs(int x)
+{
+    return std::abs(x);
+}
+inline float D_fabs(float x)
+{
+    return std::abs(x);
+}
 
 #define dcos(angle) finecosine[(angle) >> ANGLETOFINESHIFT]
 #define dsin(angle) finesine[(angle) >> ANGLETOFINESHIFT]
@@ -168,13 +175,14 @@ typedef enum {
 #define MTF_NONETGAME       2048   // Don't spawn in standard netgame mode
 #define MTF_NIGHTMARE       4096   // [kex] Nightmare thing
 
-typedef enum {
+using skill_t = int;
+enum {
     sk_baby,
     sk_easy,
     sk_medium,
     sk_hard,
     sk_nightmare
-} skill_t;
+};
 
 
 
@@ -182,7 +190,7 @@ typedef enum {
 //
 // Key cards.
 //
-typedef enum {
+enum card_t {
     it_bluecard,
     it_yellowcard,
     it_redcard,
@@ -192,14 +200,14 @@ typedef enum {
 
     NUMCARDS
 
-} card_t;
+};
 
 
 
 // The defined weapons,
 //  including a marker indicating
 //  user has not changed weapon.
-typedef enum {
+enum weapontype_t {
     wp_chainsaw,
     wp_fist,
     wp_pistol,
@@ -215,11 +223,11 @@ typedef enum {
     // No pending weapon change.
     wp_nochange
 
-} weapontype_t;
+};
 
 
 // Ammunition types defined.
-typedef enum {
+enum ammotype_t {
     am_clip,    // Pistol / chaingun ammo.
     am_shell,   // Shotgun / double barreled shotgun.
     am_cell,    // Plasma rifle, BFG.
@@ -227,11 +235,11 @@ typedef enum {
     NUMAMMO,
     am_noammo    // Unlimited for chainsaw / fist.
 
-} ammotype_t;
+};
 
 
 // Power up artifacts.
-typedef enum {
+enum powertype_t {
     pw_invulnerability,
     pw_strength,
     pw_invisibility,
@@ -240,7 +248,7 @@ typedef enum {
     pw_infrared,
     NUMPOWERS
 
-} powertype_t;
+};
 
 #define BONUSADD    4
 
@@ -248,14 +256,14 @@ typedef enum {
 // Power up durations,
 //  how many seconds till expiration,
 //
-typedef enum {
+enum powerduration_t {
     INVULNTICS  = (30*TICRATE),
     INVISTICS   = (60*TICRATE),
     INFRATICS   = (120*TICRATE),
     IRONTICS    = (60*TICRATE),
     STRTICS     = (3*TICRATE)
 
-} powerduration_t;
+};
 
 // 20120209 villsa - game flags
 enum {

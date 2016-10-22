@@ -24,8 +24,9 @@
 //-----------------------------------------------------------------------------
 
 #ifndef NET_DEFS_H
-#define NET_DEFS_H 
+#define NET_DEFS_H
 
+#include <string>
 #include "doomdef.h"
 #include "doomtype.h"
 #include "d_ticcmd.h"
@@ -94,7 +95,7 @@ struct _net_addr_s
 
 // packet types
 
-typedef enum 
+typedef enum
 {
     NET_PACKET_TYPE_SYN,
     NET_PACKET_TYPE_ACK,
@@ -115,7 +116,7 @@ typedef enum
     NET_PACKET_TYPE_CHEAT_REQUEST,
 } net_packet_type_t;
 
-typedef struct 
+typedef struct
 {
     int ticdup;
     int extratics;
@@ -123,7 +124,7 @@ typedef struct
     int nomonsters;
     int fast_monsters;
     int respawn_monsters;
-	int respawn_items;
+    int respawn_items;
     int map;
     int skill;
     int gameversion;
@@ -142,7 +143,7 @@ typedef struct
 #define NET_TICDIFF_CONSISTENCY  (1 << 4)
 #define NET_TICDIFF_CHATCHAR     (1 << 5)
 #define NET_TICDIFF_BUTTONS2     (1 << 6)
-#define NET_TICDIFF_PITCH		 (1 << 7)
+#define NET_TICDIFF_PITCH    (1 << 7)
 
 typedef struct
 {
@@ -152,7 +153,7 @@ typedef struct
 
 // Complete set of ticcmds from all players
 
-typedef struct 
+typedef struct
 {
     signed int latency;
     unsigned int seq;
@@ -164,14 +165,13 @@ typedef struct
 
 typedef struct
 {
-    char *version;
+    std::string version;
     int server_state;
     int num_players;
     int max_players;
     int gamemode;
     int gamemission;
-    char *description;
+    std::string description;
 } net_querydata_t;
 
 #endif /* #ifndef NET_DEFS_H */
-

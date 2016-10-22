@@ -26,6 +26,11 @@ cmake_minimum_required(VERSION 2.8.11)
 
 project(doom64ex C CXX)
 
+# -std=c++14
+
+set(CMAKE_C_FLAGS "-fpermissive")
+set(CMAKE_CXX_FLAGS "-fpermissive")
+
 ##------------------------------------------------------------------------------
 ## Build Options
 ##

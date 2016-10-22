@@ -133,7 +133,7 @@ typedef struct {
     sector_t     *sector;
     thinker_t    *combiner;
     int          special;
-    actionf_p1   func;
+    actionf_t    func;
 } combine_t;
 
 typedef struct {

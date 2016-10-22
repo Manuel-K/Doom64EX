@@ -24,17 +24,18 @@
 #ifndef CON_CVAR_H
 #define CON_CVAR_H
 
+#include <string>
 #include "doomtype.h"
 
 typedef struct cvar_s cvar_t;
 
 struct cvar_s {
-    char*           name;
-    char*           string;
+    std::string     name;
+    std::string     string;
     dboolean        nonclient;
     void (*callback)(cvar_t*);
     float           value;
-    char*           defvalue;
+    std::string     defvalue;
     struct cvar_s*  next;
 };
 
@@ -83,10 +84,10 @@ extern cvar_t*  cvarcap;
 
 void CON_CvarInit(void);
 void CON_CvarRegister(cvar_t *variable);
-void CON_CvarSet(char *var_name, char *value);
-void CON_CvarSetValue(char *var_name, float value);
-void CON_CvarAutoComplete(char *partial);
-cvar_t *CON_CvarGet(char *name);
+void CON_CvarSet(const std::string &var_name, const std::string &value);
+void CON_CvarSetValue(const std::string &var_name, float value);
+void CON_CvarAutoComplete(const std::string &partial);
+cvar_t *CON_CvarGet(const std::string &name);
 
 #endif
 

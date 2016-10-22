@@ -25,6 +25,8 @@
 #ifndef __D_PLAYER__
 #define __D_PLAYER__
 
+#include <string>
+
 // The player data structure depends on a number
 // of other structs: items (internal inventory),
 // animation states (closely tied to the sprites
@@ -147,7 +149,7 @@ typedef struct player_s {
     int             secretcount;
 
     // Hint messages.
-    char*           message;
+    std::string     message;
 
     // [d64] tic for how long message should stay on hud...not used in d64ex
     // int          messagetic;

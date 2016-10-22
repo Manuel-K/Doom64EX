@@ -23,9 +23,7 @@
 #ifndef __KEX_GFX_H__10293413
 #define __KEX_GFX_H__10293413
 
-#ifdef __cplusplus
-#error "This header can only be used in C code"
-#endif //__cplusplus
+extern "C" {
 
 #include <stdint.h>
 
@@ -53,7 +51,7 @@ typedef struct SpriteOffsets {
 } SpriteOffsets;
 
 Image* Image_New(uint16_t width, uint16_t height, pixel_format format);
-Image* Image_New_FromData(pixel_format format, uint16_t width, uint16_t height, char *data);
+Image* Image_New_FromData(pixel_format format, uint16_t width, uint16_t height, uint8_t *data);
 Image* Image_New_FromMemory(char *data, long size);
 int Image_Save(Image*, const char *filename, const char *format);
 void Image_Resize(Image *src, uint16_t new_width, uint16_t new_height);
@@ -70,5 +68,7 @@ void Image_Scale(Image*, uint16_t new_width, uint16_t new_height);
 void *Palette_GetData(Palette*);
 int Palette_GetCount(Palette*);
 int Palette_HasAlpha(Palette*);
+
+}
 
 #endif //__KEX_GFX_H__10293413
