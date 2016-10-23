@@ -38,8 +38,6 @@
 
 #define MAX_ARGS 256
 char *ArgBuffer[MAX_ARGS + 1];
-int myargc = 0;
-char **myargv;
 
 void WGen_ShutDownApplication(void);
 
@@ -51,7 +49,7 @@ void WGen_ShutDownApplication(void);
 
 static md5_context_t md5_context;
 
-void WGen_AddDigest(char *name, int lump, int size)
+void WGen_AddDigest(const char *name, int lump, int size)
 {
 	char buf[9];
 

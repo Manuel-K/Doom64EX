@@ -25,6 +25,7 @@
 //
 //-----------------------------------------------------------------------------
 
+#include <string>
 #include "doomstat.h"
 #include "con_console.h"
 #include "z_zone.h"
@@ -43,9 +44,8 @@
 #define CONSOLE_Y               160
 
 typedef struct {
-    int    len;
     dword  color;
-    char   line[1];
+    std::string line;
 } conline_t;
 
 enum {
@@ -70,8 +70,7 @@ static int          console_prevcmds[CMD_HISTORY_SIZE];
 static int          console_cmdhead;
 static int          console_nextcmd;
 
-char        console_inputbuffer[MAX_CONSOLE_INPUT_LEN];
-int         console_inputlength;
+std::string console_inputbuffer;
 dboolean    console_initialized = false;
 
 //
@@ -93,12 +92,11 @@ void CON_Init(void) {
     }
 
     for(i = 0; i < MAX_CONSOLE_INPUT_LEN; i++) {
-        console_inputbuffer[i] = 0;
+        console_inputbuffer = "";
     }
 
     console_linelength = 0;
-    console_inputlength = 1;
-    console_inputbuffer[0] = CONSOLE_PROMPTCHAR;
+    console_inputbuffer = CONSOLE_PROMPTCHAR;
 
     for(i = 0; i < CMD_HISTORY_SIZE; i++) {
         console_prevcmds[i] = -1;
@@ -127,7 +125,7 @@ void CON_Init(void) {
 // CON_AddLine
 //
 
-void CON_AddLine(char *line, int len) {
+void CON_AddLine(const std::string &line) {
     conline_t   *cline;
     int         i;
     dboolean    recursed = false;
@@ -144,22 +142,12 @@ void CON_AddLine(char *line, int len) {
 
     recursed = true;
 
-    if(!line) {
+    if(line.empty()) {
         return;
     }
 
-    if(len == -1) {
-        len = dstrlen(line);
-    }
+    cline->line = line;
 
-    cline = (conline_t *)Z_Malloc(sizeof(conline_t)+len, PU_STATIC, NULL);
-    cline->len = len;
-
-    if(len) {
-        dmemcpy(cline->line, line, len);
-    }
-
-    cline->line[len] = 0;
     console_head = (console_lineoffset + CONSOLETEXT_MASK) & CONSOLETEXT_MASK;
     console_minline = console_head;
     console_lineoffset = console_head;
@@ -202,7 +190,7 @@ void CON_AddText(char *text) {
 #endif
 
         if((c == '\n') || (console_linelength >= CON_BUFFERSIZE)) {
-            CON_AddLine(console_linebuffer, console_linelength);
+            CON_AddLine(console_linebuffer);
             console_linelength = 0;
         }
         if(c != '\n') {
@@ -274,9 +262,8 @@ void CON_ParseKey(char c) {
     }
 
     if(c == KEY_BACKSPACE) {
-        if(console_inputlength > 1) {
-            console_inputbuffer[--console_inputlength] = 0;
-        }
+        if (!console_inputbuffer.empty())
+            console_inputbuffer.pop_back();
 
         return;
     }
@@ -285,11 +272,11 @@ void CON_ParseKey(char c) {
         c = shiftxform[c];
     }
 
-    if(console_inputlength >= MAX_CONSOLE_INPUT_LEN - 2) {
-        console_inputlength = MAX_CONSOLE_INPUT_LEN - 2;
+    if(console_inputbuffer.size() >= MAX_CONSOLE_INPUT_LEN + 2) {
+        console_inputbuffer.pop_back();
     }
 
-    console_inputbuffer[console_inputlength++] = c;
+    console_inputbuffer.push_back(c);
 }
 
 //
@@ -358,7 +345,7 @@ dboolean CON_Responder(event_t* ev) {
                 break;
 
             case KEY_ESCAPE:
-                console_inputlength = 1;
+                console_inputbuffer = ">";
                 break;
 
             case KEY_TAB:
@@ -366,12 +353,11 @@ dboolean CON_Responder(event_t* ev) {
                 break;
 
             case KEY_ENTER:
-                if(console_inputlength <= 1) {
+                if(console_inputbuffer.size() <= 1) {
                     break;
                 }
 
-                console_inputbuffer[console_inputlength]=0;
-                CON_AddLine(console_inputbuffer, console_inputlength);
+                CON_AddLine(console_inputbuffer);
 
                 console_prevcmds[console_cmdhead] = console_head;
                 console_cmdhead++;
@@ -383,7 +369,7 @@ dboolean CON_Responder(event_t* ev) {
 
                 console_prevcmds[console_cmdhead] = -1;
                 G_ExecuteCommand(&console_inputbuffer[1]);
-                console_inputlength = 1;
+                console_inputbuffer = ">";
                 CONCLEARINPUT();
                 break;
 
@@ -400,8 +386,7 @@ dboolean CON_Responder(event_t* ev) {
                 console_nextcmd = c;
                 c = console_prevcmds[console_nextcmd];
                 if(console_buffer[c]) {
-                    console_inputlength = console_buffer[c]->len;
-                    dmemcpy(console_inputbuffer, console_buffer[console_prevcmds[console_nextcmd]]->line, console_inputlength);
+                    console_inputbuffer = console_buffer[console_prevcmds[console_nextcmd]]->line;
                 }
                 break;
 
@@ -420,8 +405,7 @@ dboolean CON_Responder(event_t* ev) {
                 }
 
                 console_nextcmd = c;
-                console_inputlength = console_buffer[console_prevcmds[console_nextcmd]]->len;
-                dmemcpy(console_inputbuffer, console_buffer[console_prevcmds[console_nextcmd]]->line, console_inputlength);
+                console_inputbuffer = console_buffer[console_prevcmds[console_nextcmd]]->line;
                 break;
 
             case KEY_MWHEELUP:

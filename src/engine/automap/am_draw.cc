@@ -45,6 +45,8 @@ extern byte amModeCycle;
 
 static angle_t am_viewangle;
 
+vtx_t drawVertex[MAXDLDRAWCOUNT];
+
 CVAR_EXTERNAL(am_fulldraw);
 CVAR_EXTERNAL(am_ssect);
 CVAR_EXTERNAL(r_texturecombiner);

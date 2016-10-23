@@ -52,7 +52,7 @@ static CMD(ListCvars) {
     CON_Printf(GREEN, "Available cvars:\n");
 
     for(var = cvarcap; var; var = var->next) {
-        CON_Printf(AQUA, "%s\n", var->name);
+        CON_Printf(AQUA, "%s\n", var->name.c_str());
     }
 }
 
@@ -136,13 +136,12 @@ void CON_CvarAutoComplete(const std::string &partial) {
             spacing[spacinglength] = 0;
 
             // print all matching cvars
-            CON_Printf(AQUA, "%s%s= %s (%s)\n", name.c_str(), spacing, cvar->string.c_str(), cvar->defvalue);
+            CON_Printf(AQUA, "%s%s= %s (%s)\n", name.c_str(), spacing, cvar->string.c_str(), cvar->defvalue.c_str());
 
             Z_Free(spacing);
 
             CONCLEARINPUT();
-            sprintf(console_inputbuffer+1, "%s ", name.c_str());
-            console_inputlength = dstrlen(console_inputbuffer);
+            console_inputbuffer = name;
         }
     }
 }
@@ -172,7 +171,7 @@ void CON_CvarSet(const std::string &var_name, const std::string &value) {
 // CON_CvarSetValue
 //
 
-void CON_CvarSetValue(char *var_name, float value) {
+void CON_CvarSetValue(const std::string &var_name, float value) {
     char val[32];
 
     sprintf(val, "%f",value);

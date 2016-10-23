@@ -565,7 +565,7 @@ void I_Init(void) {
 // I_Error
 //
 
-void I_Error(char* string, ...) {
+void I_Error(const char* string, ...) {
     char buff[1024];
     va_list    va;
 

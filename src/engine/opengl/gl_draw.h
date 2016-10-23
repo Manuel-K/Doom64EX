@@ -55,12 +55,12 @@ extern const symboldata_t symboldata[];
 #define ST_FONTSIZE        (ST_FONTEND - ST_FONTSTART + 1) // Calculate # of glyphs in font.
 
 int Draw_Text(int x, int y, rcolor color, float scale,
-              dboolean wrap, const char* string, ...);
+              dboolean wrap, const std::string &string, ...);
 int Center_Text(const std::string &string);
 int Draw_BigText(int x, int y, rcolor color, const std::string &string);
 void Draw_Number(int x, int y, int num, int type, rcolor c);
 float Draw_ConsoleText(float x, float y, rcolor color,
-                       float scale, const char* string, ...);
+                       float scale, const std::string &string, ...);
 
 #endif
 

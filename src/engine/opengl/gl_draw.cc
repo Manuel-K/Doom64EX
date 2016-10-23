@@ -113,7 +113,7 @@ static vtx_t vtxstring[MAX_MESSAGE_SIZE];
 //
 
 int Draw_Text(int x, int y, rcolor color, float scale,
-              dboolean wrap, const char* string, ...) {
+              dboolean wrap, const std::string &string, ...) {
     int c;
     int i;
     int vi = 0;
@@ -126,8 +126,8 @@ int Draw_Text(int x, int y, rcolor color, float scale,
     va_list    va;
     const int ix = x;
 
-    va_start(va, string);
-    vsprintf(msg, string, va);
+    va_start(va, string.c_str());
+    vsprintf(msg, string.c_str(), va);
     va_end(va);
 
     GL_SetState(GLSTATE_BLEND, 1);
@@ -332,7 +332,7 @@ const symboldata_t symboldata[] = {  //0x5B9BC
 // Center_Text
 //
 
-int Center_Text(const char* string) {
+int Center_Text(const std::string &string) {
     int width = 0;
     char t = 0;
     int id = 0;
@@ -340,7 +340,7 @@ int Center_Text(const char* string) {
     int i = 0;
     float scale;
 
-    len = dstrlen(string);
+    len = string.length();
 
     for(i = 0; i < len; i++) {
         t = string[i];
@@ -397,7 +397,7 @@ int Center_Text(const char* string) {
 // Draw_BigText
 //
 
-int Draw_BigText(int x, int y, rcolor color, const char* string) {
+int Draw_BigText(int x, int y, rcolor color, const std::string &string) {
     int c = 0;
     int i = 0;
     int vi = 0;
@@ -433,7 +433,7 @@ int Draw_BigText(int x, int y, rcolor color, const char* string) {
     GL_SetState(GLSTATE_BLEND, 1);
     GL_SetOrtho(0);
 
-    for(i = 0, vi = 0; i < dstrlen(string); i++, vi += 4) {
+    for(i = 0, vi = 0; i < string.length(); i++, vi += 4) {
         vx1 = (float)x;
         vy1 = (float)y;
 
@@ -886,7 +886,7 @@ static const symboldata_t confontmap[256] = {
 //
 
 float Draw_ConsoleText(float x, float y, rcolor color,
-                       float scale, const char* string, ...) {
+                       float scale, const std::string &string, ...) {
     int c = 0;
     int i = 0;
     int vi = 0;
@@ -904,8 +904,8 @@ float Draw_ConsoleText(float x, float y, rcolor color,
     float height;
     int pic;
 
-    va_start(va, string);
-    vsprintf(msg, string, va);
+    va_start(va, string.c_str());
+    vsprintf(msg, string.c_str(), va);
     va_end(va);
 
     pic = GL_BindGfxTexture("CONFONT", true);

@@ -126,13 +126,13 @@ void Wad_Decompress(byte * input, byte * output)
 //**************************************************************
 //**************************************************************
 
-int Wad_CheckLump(const char *name)
+int Wad_CheckLump(const std::string &name)
 {
 	char tempname[9] = { 0 };
 	lump_t *lump_p;
 	char first;
 
-	strncpy(tempname, name, 8);
+	strncpy(tempname, name.c_str(), 8);
 	strupr(tempname);
 
 	first = tempname[0];
@@ -155,7 +155,7 @@ int Wad_CheckLump(const char *name)
 //**************************************************************
 //**************************************************************
 
-int Wad_GetLumpNum(const char *name)
+int Wad_GetLumpNum(const std::string &name)
 {
 	int i;
 
@@ -175,7 +175,7 @@ int Wad_GetLumpNum(const char *name)
 //**************************************************************
 //**************************************************************
 
-void *Wad_GetLump(char *name, bool dcmpType)
+byte *Wad_GetLump(const std::string &name, bool dcmpType)
 {
 	byte *data;
 	byte *dmpLmp;		/*Decompression buffer */

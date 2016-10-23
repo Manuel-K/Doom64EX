@@ -1542,9 +1542,9 @@ void G_DoLoadGame(void) {
 // Description is a 24 byte text string
 //
 
-void G_SaveGame(int slot, const char* description) {
+void G_SaveGame(int slot, const std::string &description) {
     savegameslot = slot;
-    dstrcpy(savedescription, description);
+    dstrcpy(savedescription, description.c_str());
     sendsave = true;
 }
 

@@ -1,6 +1,7 @@
 #ifndef _WADGEN_WAD_H_
 #define _WADGEN_WAD_H_
 
+#include <string>
 #include "sprite.h"
 #include "gfx.h"
 #include "texture.h"
@@ -35,8 +36,8 @@ extern wadFile_t romWadFile;
 extern wadFile_t outWadFile;
 
 void Wad_GetIwad(void);
-int Wad_GetLumpNum(const char *name);
-unsigned char *Wad_GetLump(const char *name, bool dcmpType);
+int Wad_GetLumpNum(const std::string &name);
+byte*Wad_GetLump(const std::string &name, bool dcmpType);
 void Wad_CreateOutput(void);
 void Wad_WriteOutput(path outFile);
 void Wad_AddOutputSprite(d64ExSpriteLump_t * sprite);

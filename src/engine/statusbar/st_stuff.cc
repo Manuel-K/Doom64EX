@@ -1116,10 +1116,10 @@ void ST_Init(void) {
 // ST_AddChatMsg
 //
 
-void ST_AddChatMsg(char *msg, int player) {
+void ST_AddChatMsg(const std::string &msg, int player) {
     char str[MAXCHATSIZE];
 
-    sprintf(str, "%s: %s", player_names[player], msg);
+    sprintf(str, "%s: %s", player_names[player], msg.c_str());
     dmemset(stchat[st_chatcount].msg, 0, MAXCHATSIZE);
     memcpy(stchat[st_chatcount].msg, str, dstrlen(str));
     stchat[st_chatcount].tics = MAXCHATTIME;
@@ -1136,7 +1136,7 @@ void ST_AddChatMsg(char *msg, int player) {
 // Broadcast message to all clients
 //
 
-void ST_Notification(char *msg) {
+void ST_Notification(const std::string &msg) {
     int i;
 
     for(i = 0; i < MAXPLAYERS; i++) {

@@ -121,21 +121,22 @@ typedef struct {
     laser_t*    laser;
 } laserthinker_t;
 
-void P_SetupPsprites(player_t* curplayer);
-void P_MovePsprites(player_t* curplayer);
-void P_DropWeapon(player_t* player);
+extern "C" {
+void P_SetupPsprites(player_t *curplayer);
+void P_MovePsprites(player_t *curplayer);
+void P_DropWeapon(player_t *player);
 void T_LaserThinker(laserthinker_t *laser);
-
 
 //
 // P_USER
 //
-void    P_PlayerThink(player_t* player);
-void    P_Thrust(player_t* player, angle_t angle, fixed_t move);
+void P_PlayerThink(player_t *player);
+void P_Thrust(player_t *player, angle_t angle, fixed_t move);
 angle_t P_AdjustAngle(angle_t angle, angle_t newangle, int threshold);
-void    P_SetStaticCamera(player_t* player);
-void    P_SetFollowCamera(player_t* player);
-void    P_ClearUserCamera(player_t* player);
+void P_SetStaticCamera(player_t *player);
+void P_SetFollowCamera(player_t *player);
+void P_ClearUserCamera(player_t *player);
+}
 
 
 //
@@ -170,7 +171,7 @@ mobj_t*     P_SpawnMissile(mobj_t* source, mobj_t* dest, mobjtype_t type,
 //
 // P_ENEMY
 //
-void P_NoiseAlert(mobj_t* target, mobj_t* emmiter);
+extern "C" void P_NoiseAlert(mobj_t* target, mobj_t* emmiter);
 
 
 //

@@ -507,13 +507,15 @@ typedef struct {
 
 //thinkers
 
-void T_LightMorph(lightmorph_t* lt);
-void T_CountdownTimer(delay_t* timer);
+extern "C" {
+void T_LightMorph(lightmorph_t *lt);
+void T_CountdownTimer(delay_t *timer);
 void T_MobjExplode(mobjexp_t *mexp);
-void T_LookAtCamera(aimcamera_t* camera);
-void T_MovingCamera(movecamera_t* camera);
-void T_MobjFadeThinker(mobjfade_t* mobjfade);
-void T_Quake(quake_t* quake);
-void T_TraceDrawer(tracedrawer_t* tdrawer);
+void T_LookAtCamera(aimcamera_t *camera);
+void T_MovingCamera(movecamera_t *camera);
+void T_MobjFadeThinker(mobjfade_t *mobjfade);
+void T_Quake(quake_t *quake);
+void T_TraceDrawer(tracedrawer_t *tdrawer);
+}
 
 #endif

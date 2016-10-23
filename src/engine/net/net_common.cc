@@ -514,7 +514,7 @@ unsigned int NET_ExpandTicNum(unsigned int relative, unsigned int b)
 // "Safe" version of puts, for displaying messages received from the
 // network.
 
-void NET_SafePuts(char *s)
+void NET_SafePuts(const char *s)
 {
     char *p;
 
@@ -522,7 +522,7 @@ void NET_SafePuts(char *s)
     // dangerous (sending control codes to terminals can do all
     // kinds of things)
 
-    for (p=s; *p; ++p)
+    for (p= const_cast<char*>(s); *p; ++p)
     {
         if (isprint(*p))
             putchar(*p);

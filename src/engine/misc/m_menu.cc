@@ -4620,7 +4620,7 @@ dboolean M_Responder(event_t* ev) {
 
             if(ch >= 32 && ch <= 127) {
                 if(inputCharIndex < (MENUSTRINGSIZE - 1) &&
-                        M_StringWidth(inputString) < (MENUSTRINGSIZE - 2) * 8) {
+                        M_StringWidth(inputString.c_str()) < (MENUSTRINGSIZE - 2) * 8) {
                     inputString[inputCharIndex++] = ch;
                     inputString[inputCharIndex] = 0;
                 }
